@@ -8537,20 +8537,21 @@ return{_strlen:lb,_ge_mul8:Va,_keccak:db,_ge_scalarmult:Ta,_ge_fromfe_frombytes_
 
 
 
-var moneroConfig = {
+var tokliocoinConfig = {
     coinUnitPlaces: 12,
-    coinSymbol: 'XMR',
-    coinName: 'Monero',
-    coinUriPrefix: 'monero:',
-    addressPrefix: 18
+    coinSymbol: 'TOKL',
+    coinName: 'ToklioCoin',
+    coinUriPrefix: 'ToklioCoin:',
+    addressPrefix: 0x269d
 };
-var aeonConfig = {
-    coinUnitPlaces: 12,
-    coinSymbol: 'AEON',
-    coinName: 'Aeon',
-    coinUriPrefix: 'aeon:',
-    addressPrefix: 0xB2
+var superiorConfig = {
+    coinUnitPlaces: 8,
+    coinSymbol: 'SUP',
+    coinName: 'SuperiorCoin',
+    coinUriPrefix: 'SuperiorCoin:',
+    addressPrefix: 28
 };
+
 var cnUtilGen = function(initConfig) {
     //var config = $.extend({}, initConfig);
     var config = initConfig;
@@ -8973,7 +8974,7 @@ var cnUtilGen = function(initConfig) {
 
     return this;
 };
-var cnUtil = cnUtilGen(moneroConfig);
+var cnUtil = cnUtilGen(tokliocoinConfig);
 /*
  mnemonic.js : Converts between 4-byte aligned strings and a human-readable
  sequence of words. Uses 1626 common words taken from wikipedia article:
@@ -10726,15 +10727,15 @@ bC0zLjUsMjAuNGgtNkwyNDQuOCwzMTAuNkwyNDQuOCwzMTAuNnoiLz4KPC9nPgo8L3N2Zz4K">
             <p>
                 This page generates a new
                 <select onchange="js:setCoin(this.selectedIndex);" class="waves-effect waves-light btn" style="max-width: 20%">
-                  <option>Monero</option>
-                  <option>Aeon</option>
+                  <option>ToklioCoin</option>
+                  <option>SuperiorCoin</option>
                 </select>
                 wallet. It is self contained and
                 does all the necessary calculations locally, so is suitable for generating a new wallet on a machine
                 that is not connected to the network, and may even never be. This way, you can create
-                a Monero/Aeon wallet without risking the keys. This file is GPG signed, see <a href="#gpg-instructions">GPG instructions</a>.
+                a ToklioCoin wallet without risking the keys. This file is GPG signed, see <a href="#gpg-instructions">GPG instructions</a>.
                 You can check for up to date versions of this page
-                <a href="https://github.com/moneromooo-monero/monero-wallet-generator/blob/master/monero-wallet-generator.html">here</a>.
+                <a href="https://github.com/ToklioCoin/ToklioCoin-wallet-generator">here</a>.
             </p>
         </div>
     </div>
@@ -10751,7 +10752,7 @@ bC0zLjUsMjAuNGgtNkwyNDQuOCwzMTAuNkwyNDQuOCwzMTAuNnoiLz4KPC9nPgo8L3N2Zz4K">
             <form>
                 <input class="btn deep-orange" type="button" onclick="js:genwallet_prefix();" value="Generate wallet with prefix" action="" id="gen_prefix_widget"/>
                 <p>(very slow for more than a few characters)</p>
-                <input type="text" value="4" id="prefix_widget" oninput="js:check_prefix_validity()"; />
+                <input type="text" value="TK" id="prefix_widget" oninput="js:check_prefix_validity()"; />
             </form>
         </div>
     </div>
@@ -10998,12 +10999,13 @@ function genwallet(lang)
   mnemonic_widget.innerHTML = mnemonic;
 
   // only monero has the URI scheme
-  if (prefix_widget.value == "4") {
+  if (prefix_widget.value == "TK") {
     qr=new QRCode(address_qr_widget, {correctLevel:QRCode.CorrectLevel.L});
-    qr.makeCode("monero:"+keys.public_addr);
+    qr.makeCode("ToklioCoin:"+keys.public_addr);
   }
-  else {
-    qr = null;
+  else if (prefix_widget.value == "28") {
+    qr=new QRCode(address_qr_widget, {correctLevel:QRCode.CorrectLevel.L});
+    qr.makeCode("SuperiorCoin:"+keys.public_addr);
   }
 }
 
@@ -11189,14 +11191,14 @@ function setCoin(index)
   var language
   prefix_widget = document.getElementById("prefix_widget");
   if (index == 0) {
-    cnUtil = cnUtilGen(moneroConfig);
-    prefix_widget.value = "4";
+    cnUtil = cnUtilGen(tokliocoinConfig);
+    prefix_widget.value = "TK";
     enable = true
     language = "english"
   }
   else if (index == 1) {
-    cnUtil = cnUtilGen(aeonConfig);
-    prefix_widget.value = "W";
+    cnUtil = cnUtilGen(superiorConfig);
+    prefix_widget.value = "28";
     enable = false
     language = "electrum"
   }
